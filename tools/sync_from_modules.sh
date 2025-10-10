@@ -1,7 +1,7 @@
 #!/bin/bash
 # Synchronisiert Module aus /modules in das lokale Repository
 
-REPO_DIR="/home/holgder/VOS2_WORKSPACE/local-module-repository"
+REPO_DIR="/home/holgder/VOS2_WORKSPACE/local_module_repository"
 MODULES_DIR="/home/holgder/VOS2_WORKSPACE/modules"
 
 echo "🔄 Synchronisiere Module ins lokale Repository..."
@@ -21,18 +21,31 @@ for module_dir in "$MODULES_DIR"/v2_*; do
     
     module_name=$(basename "$module_dir")
     
+    # Extrahiere Basisname ohne UUID
+    # z.B. v2_dashboard_aef036f639d3486a985b65ee25df8fec → v2_dashboard
+    module_base=$(echo "$module_name" | sed 's/_[a-f0-9]\{32\}$//')
+    version_hash=$(echo "$module_name" | grep -oP '[a-f0-9]{32}$' || echo "")
+    
+    # Im Repository speichern wir OHNE UUID
+    repo_filename="${module_base}.tar.gz"
+    
     # Prüfe ob bereits als .tar.gz existiert
     if [ -f "$MODULES_DIR/${module_name}.tar.gz" ]; then
         echo "📦 Gefunden: ${module_name}.tar.gz (bereits gepackt)"
         tar_file="$MODULES_DIR/${module_name}.tar.gz"
     else
         echo "📦 Packe: $module_name"
-        tar -czf "/tmp/${module_name}.tar.gz" -C "$MODULES_DIR" "$module_name"
-        tar_file="/tmp/${module_name}.tar.gz"
+        # Temporäre Datei im Repository-Ordner erstellen
+        tar -czf "$REPO_DIR/modules/.${module_name}.tar.gz.tmp" -C "$MODULES_DIR" "$module_name" 2>/dev/null || {
+            echo "   ⚠️  Warnung: Fehler beim Packen (möglicherweise Permission-Probleme)"
+            # Versuche es ohne problematische Dateien
+            tar -czf "$REPO_DIR/modules/.${module_name}.tar.gz.tmp" -C "$MODULES_DIR" --exclude='*/storage/certificates/*' "$module_name"
+        }
+        tar_file="$REPO_DIR/modules/.${module_name}.tar.gz.tmp"
     fi
     
-    # Kopiere ins Repository
-    target_file="$REPO_DIR/modules/${module_name}.tar.gz"
+    # Kopiere ins Repository (OHNE UUID im Dateinamen!)
+    target_file="$REPO_DIR/modules/${repo_filename}"
     
     if [ -f "$target_file" ]; then
         # Prüfe ob unterschiedlich
@@ -47,16 +60,19 @@ for module_dir in "$MODULES_DIR"/v2_*; do
     
     cp "$tar_file" "$target_file"
     
-    # Erstelle/Update Metadaten
-    module_base=$(echo "$module_name" | sed 's/_[a-f0-9]\{32\}$//')
-    version_hash=$(echo "$module_name" | grep -oP '[a-f0-9]{32}$')
+    # Cleanup temp file
+    if [[ "$tar_file" == *".tmp" ]]; then
+        rm -f "$tar_file"
+    fi
     
+    # Erstelle/Update Metadaten (bereits extrahiert weiter oben)
     metadata_file="$REPO_DIR/metadata/${module_base}.json"
     
     # Berechne Checksum und Größe
     size=$(stat -f%z "$target_file" 2>/dev/null || stat -c%s "$target_file")
     checksum=$(sha256sum "$target_file" | awk '{print $1}')
     
+    # Metadata speichert OHNE UUID im filename
     cat > "$metadata_file" << EOF
 {
   "name": "$module_base",
@@ -65,7 +81,7 @@ for module_dir in "$MODULES_DIR"/v2_*; do
   "description": "Vyra Module: $module_base",
   "author": "Vyra Team",
   "dependencies": [],
-  "filename": "${module_name}.tar.gz",
+  "filename": "${repo_filename}",
   "size": $size,
   "checksum": "$checksum",
   "synced_at": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
@@ -107,7 +123,7 @@ cat > "$REPO_DIR/repository.json" << EOF
   "description": "Lokales Vyra Module Repository für Offline-Entwicklung",
   "version": "1.0.0",
   "type": "file-based",
-  "base_url": "file:///home/holgder/VOS2_WORKSPACE/local-module-repository",
+  "base_url": "file:///home/holgder/VOS2_WORKSPACE/local_module_repository",
   "last_updated": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
   "modules": $module_list
 }
