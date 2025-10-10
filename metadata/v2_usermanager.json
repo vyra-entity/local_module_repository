@@ -1,0 +1,12 @@
+{
+  "name": "v2_usermanager",
+  "version": "1.0.0",
+  "hash": "",
+  "description": "Vyra Module: v2_usermanager",
+  "author": "Vyra Team",
+  "dependencies": [],
+  "filename": "v2_usermanager.tar.gz",
+  "size": 12979,
+  "checksum": "961376ebce22f7c857f6ca0678d7d77b7c7faaefbbce42b97523b13cbdb103f3",
+  "synced_at": "2025-10-10T07:46:33Z"
+}

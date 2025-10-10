@@ -1,0 +1,12 @@
+{
+  "name": "v2_modulemanager",
+  "version": "1.0.0",
+  "hash": "733256b82d6b48a48bc52b5ec73ebfff",
+  "description": "Vyra Module: v2_modulemanager",
+  "author": "Vyra Team",
+  "dependencies": [],
+  "filename": "v2_modulemanager_733256b82d6b48a48bc52b5ec73ebfff.tar.gz",
+  "size": 44533303,
+  "checksum": "876d4238d989cb00cf8234c4fba9b5e43724d4c4bcddf8ca6089b42e7d99d7c6",
+  "synced_at": "2025-10-10T07:46:33Z"
+}

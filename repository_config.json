@@ -1,0 +1,33 @@
+{
+  "repositories": [
+    {
+      "name": "local-module-repository",
+      "url": "file:///home/holgder/VOS2_WORKSPACE/local-module-repository",
+      "priority": 0,
+      "enabled": true,
+      "type": "file-based",
+      "description": "Lokales Repository für Offline-Entwicklung"
+    },
+    {
+      "name": "vyra-official",
+      "url": "https://repository.vyra.io",
+      "priority": 10,
+      "enabled": true,
+      "type": "https",
+      "api_key": "${VYRA_API_KEY}",
+      "cert_fingerprint": "${VYRA_CERT_FINGERPRINT}",
+      "description": "Offizielles Vyra Repository (Fallback)"
+    }
+  ],
+  "cache": {
+    "enabled": true,
+    "directory": "/tmp/vyra-repository-cache",
+    "max_size_mb": 500,
+    "ttl_seconds": 3600
+  },
+  "download": {
+    "timeout_seconds": 300,
+    "retry_attempts": 3,
+    "verify_checksum": true
+  }
+}
