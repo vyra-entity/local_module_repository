@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type": "file-based",
   "base_url": "file:///home/holgder/VOS2_WORKSPACE/local_module_repository",
-  "last_updated": "2025-10-10T09:50:43Z",
+  "last_updated": "2025-10-15T06:53:56Z",
   "modules": [
     {
   "name": "v2_dashboard",
@@ -14,9 +14,9 @@
   "author": "Vyra Team",
   "dependencies": [],
   "filename": "v2_dashboard.tar.gz",
-  "size": 40421595,
-  "checksum": "bc3c0011f9a5b946b584a6432a795ade32682e03a55b6974776e12c776c64996",
-  "synced_at": "2025-10-10T09:50:33Z"
+  "size": 40478441,
+  "checksum": "a40b2bbb4490a936f2848a90dd8e59d38084f50994c2fd3cfd24fee37f8e95c2",
+  "synced_at": "2025-10-15T06:53:52Z"
 },
     {
   "name": "v2_modulemanager",
@@ -26,21 +26,21 @@
   "author": "Vyra Team",
   "dependencies": [],
   "filename": "v2_modulemanager.tar.gz",
-  "size": 44567419,
-  "checksum": "2fdea9c0b9c76884a72b936e55ec595429e9e771814a1a361fc76e5ed99b549b",
-  "synced_at": "2025-10-10T09:50:43Z"
+  "size": 43397668,
+  "checksum": "f6e0ed4f1d512c36a20d0e881ed867bf4270782000b8f6e42eb308b42d684cee",
+  "synced_at": "2025-10-15T06:53:56Z"
 },
     {
-  "name": "v2_usermanager",
+  "name": "v2_usermanager_562eef121977473b",
   "version": "1.0.0",
   "hash": "",
-  "description": "Vyra Module: v2_usermanager",
+  "description": "Vyra Module: v2_usermanager_562eef121977473b",
   "author": "Vyra Team",
   "dependencies": [],
-  "filename": "v2_usermanager.tar.gz",
-  "size": 12979,
-  "checksum": "961376ebce22f7c857f6ca0678d7d77b7c7faaefbbce42b97523b13cbdb103f3",
-  "synced_at": "2025-10-10T07:46:33Z"
+  "filename": "v2_usermanager_562eef121977473b.tar.gz",
+  "size": 12988,
+  "checksum": "c016c4e94e1181deb9642ac2f2933f1dc3c2c43c153b0d73711d73fe9f206c0a",
+  "synced_at": "2025-10-15T06:53:56Z"
 }
 ]
 }
