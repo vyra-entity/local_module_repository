@@ -1,0 +1,12 @@
+{
+  "repositories": [
+    {
+      "name": "local-module-repository",
+      "url": "file:///local_module_repository",
+      "priority": 0,
+      "enabled": true,
+      "type": "file-based",
+      "description": "Lokales Repository für Offline-Entwicklung"
+    }
+  ]
+}

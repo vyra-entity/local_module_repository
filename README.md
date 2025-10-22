@@ -8,7 +8,12 @@ Lokales dateibasiertes Vyra Module Repository für Offline-Entwicklung und Testi
 local-module-repository/
 ├── repository.json          # Repository-Metadaten
 ├── modules/                 # Module als .tar.gz Dateien
-│   ├── v2_dashboard_aef036f639d3486a985b65ee25df8fec.tar.gz
+│   ├── metadata/                # Modul-Metadaten (JSON)
+│   |   ├── v2_dashboard.json
+│   |   ├── v2_modulemanager.json
+│   |   └── ...
+│   └── ...
+├── v2_dashboard_aef036f639d3486a985b65ee25df8fec.tar.gz
 │   ├── v2_modulemanager_733256b82d6b48a48bc52b5ec73ebfff.tar.gz
 │   └── ...
 ├── metadata/                # Modul-Metadaten (JSON)
@@ -22,7 +27,7 @@ local-module-repository/
 
 ### 1. Repository in Client konfigurieren
 
-Füge das Repository in deiner `repository_config.json` hinzu:
+Füge das Repository in deiner `config/repository_config.json` hinzu:
 
 ```json
 {
@@ -43,15 +48,15 @@ Füge das Repository in deiner `repository_config.json` hinzu:
 #### Manuell:
 ```bash
 # Modul exportieren
-cd /home/holgder/VOS2_WORKSPACE/modules
+cd /<YOUR_WORKSPACE>/modules
 tar -czf v2_dashboard_aef036f639d3486a985b65ee25df8fec.tar.gz v2_dashboard_aef036f639d3486a985b65ee25df8fec/
 
 # In Repository kopieren
 cp v2_dashboard_aef036f639d3486a985b65ee25df8fec.tar.gz \
-   /home/holgder/VOS2_WORKSPACE/local-module-repository/modules/
+   /../local-module-repository/modules/
 
-# Metadaten erstellen
-cat > /home/holgder/VOS2_WORKSPACE/local-module-repository/metadata/v2_dashboard.json << 'EOF'
+# Metadaten erstellen (Example)
+cat > /home/holgder/VOS2_WORKSPACE/local-module-repository/modules/metadata/v2_dashboard.json << 'EOF'
 {
   "name": "v2_dashboard",
   "version": "1.0.0",
@@ -66,19 +71,10 @@ cat > /home/holgder/VOS2_WORKSPACE/local-module-repository/metadata/v2_dashboard
 EOF
 ```
 
-#### Mit Script (automatisch):
+#### Mit Script aus modules path laden (automatisch):
 ```bash
 # Verwende das sync-script (wird noch erstellt)
 ./local-module-repository/tools/sync_from_modules.sh
-```
-
-### 3. Module installieren
-
-```python
-from repository_client import RepositoryClient
-
-client = RepositoryClient(config_file="repository_config.json")
-await client.install_module("v2_dashboard", version="1.0.0")
 ```
 
 ## 🔧 Vorteile
@@ -89,9 +85,12 @@ await client.install_module("v2_dashboard", version="1.0.0")
 - ✅ **Einfach** - keine Authentifizierung nötig
 - ✅ **Entwicklung** - ideal für lokales Testing
 
+## Nachteile
+- ⚠️ **Keine automatischen Updates** - Updates nur über Cloud Repository
+
 ## 📝 Notizen
 
-- Base URL: `file:///home/holgder/VOS2_WORKSPACE/local-module-repository`
+- Base URL: `file:///<YOUR_WORKSPACE>/local-module-repository`
 - Priorität: 0 (wird zuerst geprüft, vor Online-Repositories)
 - Keine API-Key Authentifizierung erforderlich
 - Module können einfach per `cp` hinzugefügt werden

@@ -1,8 +1,27 @@
 #!/bin/bash
 # Synchronisiert Module aus /modules in das lokale Repository
 
-REPO_DIR="/home/holgder/VOS2_WORKSPACE/local_module_repository"
-MODULES_DIR="/home/holgder/VOS2_WORKSPACE/modules"
+SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+REPO_DIR="$(dirname "$SCRIPT_DIR")"
+
+if [ -z "$1" ]; then
+    echo "Path to modules not given. Using default: ../modules"
+    echo "Example: $0 $REPO_DIR"
+    MODULES_DIR="$(dirname "$REPO_DIR")/modules"
+else
+    MODULES_DIR="$1"
+fi
+
+if [ ! -d "$REPO_DIR/modules" ]; then
+    echo "Erstelle Verzeichnis für Module im Repository..."
+    mkdir -p "$REPO_DIR/modules"
+fi
+
+if [ ! -d "$REPO_DIR/modules/metadata" ]; then
+    echo "Erstelle Verzeichnis für Module Metadaten im Repository..."
+    mkdir -p "$REPO_DIR/modules/metadata"
+fi
+
 
 echo "🔄 Synchronisiere Module ins lokale Repository..."
 echo "   Quelle: $MODULES_DIR"
@@ -16,6 +35,11 @@ skipped=0
 # Durchlaufe alle Module
 for module_dir in "$MODULES_DIR"/v2_*; do
     if [ ! -d "$module_dir" ]; then
+        continue
+    fi
+
+    if [[ "$(basename "$module_dir")" == v2_modulemanager_* ]]; then
+        echo "Modulemanager aussortieren. Soll nicht in repository."
         continue
     fi
     
@@ -66,7 +90,7 @@ for module_dir in "$MODULES_DIR"/v2_*; do
     fi
     
     # Erstelle/Update Metadaten (bereits extrahiert weiter oben)
-    metadata_file="$REPO_DIR/metadata/${module_base}.json"
+    metadata_file="$REPO_DIR/modules/metadata/${module_base}.json"
     
     # Berechne Checksum und Größe
     size=$(stat -f%z "$target_file" 2>/dev/null || stat -c%s "$target_file")
@@ -99,7 +123,7 @@ echo "📝 Update repository.json..."
 # Erstelle Modulliste
 module_list="["
 first=true
-for metadata in "$REPO_DIR/metadata"/*.json; do
+for metadata in "$REPO_DIR/modules/metadata"/*.json; do
     if [ ! -f "$metadata" ]; then
         continue
     fi
@@ -123,7 +147,7 @@ cat > "$REPO_DIR/repository.json" << EOF
   "description": "Lokales Vyra Module Repository für Offline-Entwicklung",
   "version": "1.0.0",
   "type": "file-based",
-  "base_url": "file:///home/holgder/VOS2_WORKSPACE/local_module_repository",
+  "base_url": "file:///local_module_repository",
   "last_updated": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
   "modules": $module_list
 }

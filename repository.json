@@ -3,8 +3,8 @@
   "description": "Lokales Vyra Module Repository für Offline-Entwicklung",
   "version": "1.0.0",
   "type": "file-based",
-  "base_url": "file:///home/holgder/VOS2_WORKSPACE/local_module_repository",
-  "last_updated": "2025-10-15T06:53:56Z",
+  "base_url": "file:///local_module_repository",
+  "last_updated": "2025-10-22T09:39:41Z",
   "modules": [
     {
   "name": "v2_dashboard",
@@ -14,21 +14,9 @@
   "author": "Vyra Team",
   "dependencies": [],
   "filename": "v2_dashboard.tar.gz",
-  "size": 40478441,
-  "checksum": "a40b2bbb4490a936f2848a90dd8e59d38084f50994c2fd3cfd24fee37f8e95c2",
-  "synced_at": "2025-10-15T06:53:52Z"
-},
-    {
-  "name": "v2_modulemanager",
-  "version": "1.0.0",
-  "hash": "733256b82d6b48a48bc52b5ec73ebfff",
-  "description": "Vyra Module: v2_modulemanager",
-  "author": "Vyra Team",
-  "dependencies": [],
-  "filename": "v2_modulemanager.tar.gz",
-  "size": 43397668,
-  "checksum": "f6e0ed4f1d512c36a20d0e881ed867bf4270782000b8f6e42eb308b42d684cee",
-  "synced_at": "2025-10-15T06:53:56Z"
+  "size": 40478831,
+  "checksum": "e4633405f9fb11ab73274fc3f2c724c29add2842c8f829a01bbbfe16b6fd9480",
+  "synced_at": "2025-10-22T09:39:41Z"
 },
     {
   "name": "v2_usermanager_562eef121977473b",
@@ -40,7 +28,7 @@
   "filename": "v2_usermanager_562eef121977473b.tar.gz",
   "size": 12988,
   "checksum": "c016c4e94e1181deb9642ac2f2933f1dc3c2c43c153b0d73711d73fe9f206c0a",
-  "synced_at": "2025-10-15T06:53:56Z"
+  "synced_at": "2025-10-22T09:39:41Z"
 }
 ]
 }
