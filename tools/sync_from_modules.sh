@@ -45,6 +45,10 @@ for module_dir in "$MODULES_DIR"/v2_*; do
     
     module_name=$(basename "$module_dir")
     
+    name=$(yq e '.name' $module_dir/.module/module_data.yaml)
+    description=$(yq e '.description' $module_dir/.module/module_data.yaml)
+    version=$(yq e '.version' $module_dir/.module/module_data.yaml)
+
     # Extrahiere Basisname ohne UUID
     # z.B. v2_dashboard_aef036f639d3486a985b65ee25df8fec → v2_dashboard
     module_base=$(echo "$module_name" | sed 's/_[a-f0-9]\{32\}$//')
@@ -100,11 +104,10 @@ for module_dir in "$MODULES_DIR"/v2_*; do
     cat > "$metadata_file" << EOF
 {
   "name": "$module_base",
-  "version": "1.0.0",
+  "version": "$version",
   "hash": "$version_hash",
-  "description": "Vyra Module: $module_base",
+  "description": "$description",
   "author": "Vyra Team",
-  "dependencies": [],
   "filename": "${repo_filename}",
   "size": $size,
   "checksum": "$checksum",

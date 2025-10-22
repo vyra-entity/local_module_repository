@@ -1,12 +1,11 @@
 {
   "name": "v2_dashboard",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "hash": "aef036f639d3486a985b65ee25df8fec",
-  "description": "Vyra Module: v2_dashboard",
+  "description": "This template could be used to create a vyra module with basic functionality.",
   "author": "Vyra Team",
-  "dependencies": [],
   "filename": "v2_dashboard.tar.gz",
   "size": 40478831,
   "checksum": "e4633405f9fb11ab73274fc3f2c724c29add2842c8f829a01bbbfe16b6fd9480",
-  "synced_at": "2025-10-22T09:39:41Z"
+  "synced_at": "2025-10-22T11:35:25Z"
 }
