@@ -48,7 +48,9 @@ for module_dir in "$MODULES_DIR"/v2_*; do
     name=$(yq e '.name' $module_dir/.module/module_data.yaml)
     description=$(yq e '.description' $module_dir/.module/module_data.yaml)
     version=$(yq e '.version' $module_dir/.module/module_data.yaml)
-
+    dependencies=$(yq e '.dependencies' $module_dir/.module/module_data.yaml)
+    template=$(yq e '.template' $module_dir/.module/module_data.yaml)
+    icon=$(yq e '.icon' $module_dir/.module/module_data.yaml)
     # Extrahiere Basisname ohne UUID
     # z.B. v2_dashboard_aef036f639d3486a985b65ee25df8fec → v2_dashboard
     module_base=$(echo "$module_name" | sed 's/_[a-f0-9]\{32\}$//')
@@ -63,11 +65,12 @@ for module_dir in "$MODULES_DIR"/v2_*; do
         tar_file="$MODULES_DIR/${module_name}.tar.gz"
     else
         echo "📦 Packe: $module_name"
+        echo "   📁 Quelle: $module_dir"
         # Temporäre Datei im Repository-Ordner erstellen
         tar -czf "$REPO_DIR/modules/.${module_name}.tar.gz.tmp" -C "$MODULES_DIR" "$module_name" 2>/dev/null || {
             echo "   ⚠️  Warnung: Fehler beim Packen (möglicherweise Permission-Probleme)"
             # Versuche es ohne problematische Dateien
-            tar -czf "$REPO_DIR/modules/.${module_name}.tar.gz.tmp" -C "$MODULES_DIR" --exclude='*/storage/certificates/*' "$module_name"
+            tar -czf "$REPO_DIR/modules/.${module_name}.tar.gz.tmp" -C "$MODULES_DIR" "$module_name" --exclude='*/storage/certificates/*'
         }
         tar_file="$REPO_DIR/modules/.${module_name}.tar.gz.tmp"
     fi
@@ -108,10 +111,14 @@ for module_dir in "$MODULES_DIR"/v2_*; do
   "hash": "$version_hash",
   "description": "$description",
   "author": "Vyra Team",
+  "category": "$template",
+  "icon": "$icon",
+  "dependencies": $dependencies,
   "filename": "${repo_filename}",
+  "synced_at": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
   "size": $size,
   "checksum": "$checksum",
-  "synced_at": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+  
 }
 EOF
     

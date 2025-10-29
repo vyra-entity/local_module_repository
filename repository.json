@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type": "file-based",
   "base_url": "file:///local_module_repository",
-  "last_updated": "2025-10-28T12:52:51Z",
+  "last_updated": "2025-10-29T16:19:51Z",
   "modules": [
     {
   "name": "v2_dashboard",
@@ -12,10 +12,14 @@
   "hash": "aef036f639d3486a985b65ee25df8fec",
   "description": "This template could be used to create a vyra module with basic functionality.",
   "author": "Vyra Team",
+  "category": "basic",
+  "icon": "null",
+  "dependencies": null,
   "filename": "v2_dashboard.tar.gz",
-  "size": 40499184,
-  "checksum": "59975be05cec7c3043c20236dd5f06a041c49700544348332dd02e4a6fa54f62",
-  "synced_at": "2025-10-28T12:52:51Z"
+  "synced_at": "2025-10-29T16:19:51Z",
+  "size": 40672802,
+  "checksum": "85ecd364d29abc7b7231301a8147680cbc428d5eae48c3837ee461bc0afe3bf0",
+  
 }
 ]
 }
