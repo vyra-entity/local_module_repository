@@ -48,7 +48,7 @@ for module_dir in "$MODULES_DIR"/v2_*; do
     name=$(yq e '.name' $module_dir/.module/module_data.yaml)
     description=$(yq e '.description' $module_dir/.module/module_data.yaml)
     version=$(yq e '.version' $module_dir/.module/module_data.yaml)
-    dependencies=$(yq e '.dependencies' $module_dir/.module/module_data.yaml)
+    dependencies=$(yq e -o=json '.dependencies' $module_dir/.module/module_data.yaml)
     template=$(yq e '.template' $module_dir/.module/module_data.yaml)
     icon=$(yq e '.icon' $module_dir/.module/module_data.yaml)
     # Extrahiere Basisname ohne UUID
@@ -117,8 +117,7 @@ for module_dir in "$MODULES_DIR"/v2_*; do
   "filename": "${repo_filename}",
   "synced_at": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
   "size": $size,
-  "checksum": "$checksum",
-  
+  "checksum": "$checksum"
 }
 EOF
     
