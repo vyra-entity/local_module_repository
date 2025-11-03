@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "type": "file-based",
   "base_url": "file:///local_module_repository",
-  "last_updated": "2025-10-30T08:28:16Z",
+  "last_updated": "2025-11-03T20:11:58Z",
   "modules": [
     {
   "name": "v2_dashboard",
@@ -14,13 +14,11 @@
   "author": "Vyra Team",
   "category": "basic",
   "icon": "",
-  "dependencies": [
-  "v2_modulemanager"
-],
+  "dependencies": [],
   "filename": "v2_dashboard.tar.gz",
-  "synced_at": "2025-10-30T08:28:15Z",
-  "size": 40261365,
-  "checksum": "6ebd328e44500826e78e9055e6277f2f3fc29996e2398c4c6ece0f73aac50aa2"
+  "synced_at": "2025-11-03T20:11:58Z",
+  "size": 40847759,
+  "checksum": "e40203b3332a2be1467aab88c61460f23c3ef204dfbb65c3778c02a83c988bc3"
 }
 ]
 }
