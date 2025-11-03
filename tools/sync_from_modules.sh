@@ -78,7 +78,7 @@ for module_dir in "$MODULES_DIR"/v2_*; do
         echo "📦 Packe: $module_name"
         echo "   📁 Quelle: $module_dir"
         # Temporäre Datei im Repository-Ordner erstellen
-        tar -czf "$REPO_DIR/modules/.${module_name}.tar.gz.tmp" -C "$MODULES_DIR/$module_name" . 2>$module_name.err.log || {
+        tar -czf "$REPO_DIR/modules/.${module_name}.tar.gz.tmp" -C "$MODULES_DIR/$module_name" . 2>/dev/null || {
             echo "   ⚠️  Warnung: Fehler beim Packen (möglicherweise Permission-Probleme)"
             # Versuche es ohne problematische Dateien
             tar -czf "$REPO_DIR/modules/.${module_name}.tar.gz.tmp" -C "$MODULES_DIR/$module_name" . --exclude='*/storage/certificates/*'

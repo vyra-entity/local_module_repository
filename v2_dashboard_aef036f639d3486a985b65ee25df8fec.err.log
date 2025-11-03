@@ -1,3 +1,0 @@
-tar: ./storage/certificates/webserver.key: Cannot open: Permission denied
-tar: ./storage/certificates/frontend.key: Cannot open: Permission denied
-tar: Exiting with failure status due to previous errors
