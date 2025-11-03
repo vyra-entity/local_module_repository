@@ -64,8 +64,6 @@ for module_dir in "$MODULES_DIR"/v2_*; do
     # z.B. v2_dashboard_aef036f639d3486a985b65ee25df8fec → v2_dashboard
     module_base=$(echo "$module_name" | sed 's/_[a-f0-9]\{32\}$//')
     version_hash=$(echo "$module_name" | grep -oP '[a-f0-9]{32}$' || echo "")
-    
-
 
     # Im Repository speichern wir OHNE UUID
     repo_filename="${module_base}.tar.gz"
