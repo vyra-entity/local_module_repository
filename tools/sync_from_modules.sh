@@ -160,6 +160,12 @@ done
 module_list="${module_list}
 ]"
 
+# Check if repository.json exists and is identical
+if [ ! -f "$REPO_DIR/repository.json" ]; then
+    echo "📄 repository.json nicht gefunden, kopiere Vorlage"
+    cp "$REPO_DIR/repository.template.json" "$REPO_DIR/repository.json"
+fi
+
 # Update repository.json
 cat > "$REPO_DIR/repository.json" << EOF
 {
