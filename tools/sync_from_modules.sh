@@ -1,6 +1,7 @@
 #!/bin/bash
 # Synchronisiert Module aus /modules in das lokale Repository
 
+echo "========== 🔄 Starte Modulsynchronisation ins lokale Repository =========="
 SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 REPO_DIR="$(dirname "$SCRIPT_DIR")"
 
@@ -23,6 +24,7 @@ if [ ! -d "$REPO_DIR/modules/metadata" ]; then
 fi
 
 
+echo ""
 echo "🔄 Synchronisiere Module ins lokale Repository..."
 echo "   Quelle: $MODULES_DIR"
 echo "   Ziel: $REPO_DIR"
@@ -39,7 +41,7 @@ for module_dir in "$MODULES_DIR"/v2_*; do
     fi
 
     if [[ "$(basename "$module_dir")" == v2_modulemanager_* ]]; then
-        echo "Modulemanager aussortieren. Soll nicht in repository."
+        echo "⏭️  Überspringe Modulemanager. Soll nicht ins repository."
         continue
     fi
     
@@ -51,7 +53,10 @@ for module_dir in "$MODULES_DIR"/v2_*; do
     dependencies=$(yq e -o=json '.dependencies' $module_dir/.module/module_data.yaml)
     template=$(yq e '.template' $module_dir/.module/module_data.yaml)
     icon=$(yq e '.icon' $module_dir/.module/module_data.yaml)
+    author=$(yq e '.author' $module_dir/.module/module_data.yaml)
     
+    description=$(echo "$description" | tr -d '\n' | sed 's/  */ /g')
+
     if [ "$dependencies" == "null" ]; then
         dependencies="[]"
     fi
@@ -64,24 +69,28 @@ for module_dir in "$MODULES_DIR"/v2_*; do
     # z.B. v2_dashboard_aef036f639d3486a985b65ee25df8fec → v2_dashboard
     module_base=$(echo "$module_name" | sed 's/_[a-f0-9]\{32\}$//')
     version_hash=$(echo "$module_name" | grep -oP '[a-f0-9]{32}$' || echo "")
-
+    
     # Im Repository speichern wir OHNE UUID
-    repo_filename="${module_base}.tar.gz"
+    repo_filename="${module_base}_${version}.tar.gz"
     
     # Prüfe ob bereits als .tar.gz existiert
-    if [ -f "$MODULES_DIR/${module_name}.tar.gz" ]; then
-        echo "📦 Gefunden: ${module_name}.tar.gz (bereits gepackt)"
-        tar_file="$MODULES_DIR/${module_name}.tar.gz"
+    if [ -f "$MODULES_DIR/${repo_filename}" ]; then
+        echo "📦 Gefunden: ${repo_filename} (bereits gepackt)"
+        tar_file="$MODULES_DIR/${repo_filename}"
     else
         echo "📦 Packe: $module_name"
-        echo "   📁 Quelle: $module_dir"
+        echo "   - 📁 Quelle: $module_dir"
         # Temporäre Datei im Repository-Ordner erstellen
-        tar -czf "$REPO_DIR/modules/.${module_name}.tar.gz.tmp" -C "$MODULES_DIR/$module_name" . 2>/dev/null || {
-            echo "   ⚠️  Warnung: Fehler beim Packen (möglicherweise Permission-Probleme)"
-            # Versuche es ohne problematische Dateien
-            tar -czf "$REPO_DIR/modules/.${module_name}.tar.gz.tmp" -C "$MODULES_DIR/$module_name" . --exclude='*/storage/certificates/*'
+        # tar -czf "$REPO_DIR/modules/.${repo_filename}.tmp" -C "$MODULES_DIR/$module_name" . 2>/dev/null || {
+        #     echo "   ⚠️  Warnung: Fehler beim Packen (möglicherweise Permission-Probleme)"
+        #     # Versuche es ohne problematische Dateien
+        #     tar -czf "$REPO_DIR/modules/.${repo_filename}.tmp" --exclude='*/storage/certificates/*' -C "$MODULES_DIR/$module_name" . 
+        # }
+        tar -czf "$REPO_DIR/modules/.${repo_filename}.tmp" --exclude='*/storage/certificates/*' -C "$MODULES_DIR/$module_name" . | echo "   - ✅ Packen erfolgreich" || {
+            echo "   - ⚠️  Warnung: Fehler beim Packen (möglicherweise Permission-Probleme): $?"
+
         }
-        tar_file="$REPO_DIR/modules/.${module_name}.tar.gz.tmp"
+        tar_file="$REPO_DIR/modules/.${repo_filename}.tmp"
     fi
     
     # Kopiere ins Repository (OHNE UUID im Dateinamen!)
@@ -90,11 +99,12 @@ for module_dir in "$MODULES_DIR"/v2_*; do
     if [ -f "$target_file" ]; then
         # Prüfe ob unterschiedlich
         if cmp -s "$tar_file" "$target_file"; then
-            echo "   ⏭️  Überspringe (bereits vorhanden und identisch)"
+            echo "   - ⏭️  Überspringe (bereits vorhanden und identisch)"
             skipped=$((skipped + 1))
+            echo ""
             continue
         else
-            echo "   ♻️  Update (Datei hat sich geändert)"
+            echo "   - ♻️  Update (Datei hat sich geändert)"
         fi
     fi
     
@@ -119,7 +129,7 @@ for module_dir in "$MODULES_DIR"/v2_*; do
   "version": "$version",
   "hash": "$version_hash",
   "description": "$description",
-  "author": "Vyra Team",
+  "author": "$author",
   "category": "$template",
   "icon": "$icon",
   "dependencies": $dependencies,
@@ -130,7 +140,8 @@ for module_dir in "$MODULES_DIR"/v2_*; do
 }
 EOF
     
-    echo "   ✅ Synchronisiert: $module_base"
+    echo "   - ✅ Synchronisiert: $module_base"
+    echo ""
     synced=$((synced + 1))
 done
 
@@ -186,3 +197,4 @@ echo "      - Gesamt: $((synced + skipped)) Module"
 echo ""
 echo "📍 Repository Pfad: $REPO_DIR"
 echo "🔗 Base URL: file://$REPO_DIR"
+echo "========== ✅ Modulsynchronisation abgeschlossen =========="
