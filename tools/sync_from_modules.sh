@@ -86,7 +86,17 @@ for module_dir in "$MODULES_DIR"/v2_*; do
         #     # Versuche es ohne problematische Dateien
         #     tar -czf "$REPO_DIR/modules/.${repo_filename}.tmp" --exclude='*/storage/certificates/*' -C "$MODULES_DIR/$module_name" . 
         # }
-        tar -czf "$REPO_DIR/modules/.${repo_filename}.tmp" --exclude='*/storage/certificates/*' -C "$MODULES_DIR/$module_name" . | echo "   - ✅ Packen erfolgreich" || {
+
+        EXCLUDES=(
+            "storage/certificates/*"
+            ".git/"
+            ".github/"
+            ".bak/"
+            ".gitignore"
+            ".vscode"
+        )
+        
+        tar -czf "$REPO_DIR/modules/.${repo_filename}.tmp" ${EXCLUDES[@]/#/--exclude=} -C "$MODULES_DIR/$module_name" . | echo "   - ✅ Packen erfolgreich" || {
             echo "   - ⚠️  Warnung: Fehler beim Packen (möglicherweise Permission-Probleme): $?"
 
         }
