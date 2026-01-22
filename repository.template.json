@@ -12,7 +12,7 @@
   "hash": "aef036f639d3486a985b65ee25df8fec",
   "description": "This template could be used to create a vyra module with basic functionality.",
   "author": "Vyra Team",
-  "category": "basic",
+  "template": "basic",
   "icon": "",
   "dependencies": [],
   "filename": "v2_dashboard.tar.gz",

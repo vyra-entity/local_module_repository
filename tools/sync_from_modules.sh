@@ -140,7 +140,7 @@ for module_dir in "$MODULES_DIR"/v2_*; do
   "hash": "$version_hash",
   "description": "$description",
   "author": "$author",
-  "category": "$template",
+  "template": "$template",
   "icon": "$icon",
   "dependencies": $dependencies,
   "filename": "${repo_filename}",
