@@ -65,6 +65,21 @@ for module_dir in "$MODULES_DIR"/v2_*; do
         icon=""
     fi
 
+    # Lese Flags aus .env Datei
+    frontend_active="false"
+    backend_active="false"
+    
+    if [ -f "$module_dir/.env" ]; then
+        # Prüfe ENABLE_FRONTEND_WEBSERVER
+        if grep -q "^ENABLE_FRONTEND_WEBSERVER=true" "$module_dir/.env" 2>/dev/null; then
+            frontend_active="true"
+        fi
+        # Prüfe ENABLE_BACKEND_API
+        if grep -q "^ENABLE_BACKEND_API=true" "$module_dir/.env" 2>/dev/null; then
+            backend_active="true"
+        fi
+    fi
+
     # Extrahiere Basisname ohne UUID
     # z.B. v2_dashboard_aef036f639d3486a985b65ee25df8fec → v2_dashboard
     module_base=$(echo "$module_name" | sed 's/_[a-f0-9]\{32\}$//')
@@ -143,6 +158,10 @@ for module_dir in "$MODULES_DIR"/v2_*; do
   "template": "$template",
   "icon": "$icon",
   "dependencies": $dependencies,
+  "flags": {
+    "frontend_active": $frontend_active,
+    "backend_active": $backend_active
+  },
   "filename": "${repo_filename}",
   "synced_at": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
   "size": $size,
