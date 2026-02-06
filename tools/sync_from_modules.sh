@@ -104,6 +104,7 @@ for module_dir in "$MODULES_DIR"/v2_*; do
 
         EXCLUDES=(
             "storage/certificates/*"
+            "*/node_modules/*"
             ".git/"
             ".github/"
             ".bak/"
