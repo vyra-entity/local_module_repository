@@ -44,6 +44,12 @@ for module_dir in "$MODULES_DIR"/v2_*; do
         echo "⏭️  Überspringe Modulemanager. Soll nicht ins repository."
         continue
     fi
+
+    MODULE_NAME=$(yq e '.name // ""' $module_dir/.module/module_data.yaml 2>/dev/null || basename "$module_dir")
+    if [[ "$MODULE_NAME" == *"template"* ]]; then
+        echo "⏭️  Überspringe Template-Modul: $MODULE_NAME"
+        continue
+    fi
     
     module_name=$(basename "$module_dir")
     
